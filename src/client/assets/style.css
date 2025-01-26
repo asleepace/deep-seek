@@ -16,7 +16,6 @@
 html,
 body {
     font-family: "Roboto", sans-serif;
-    background-color: #f5f5f5;
     min-height: 100svh;
     display: flex;
     flex-direction: column;
@@ -65,38 +64,46 @@ a {
 
 ul {
     list-style: none;
+    width: 100%;
 }
 
 /* CHAT_SPECIFIC_ELEMENTS */
 
 #chat-output {
-    min-height: 400px;
-    overflow-x: none;
+    overflow-x: hidden;
     overflow-y: auto;
+    min-height: 100svh;
 }
 
-#chat-results li {
+#chat-output > ul {
+    min-width: 600px;
+    list-style: none;
+    margin: 0 auto;
+    padding: 0;
+}
+
+#chat-results > li {
     text-align: left;
     list-style: none;
     list-style-position: outside;
     margin-bottom: 10px;
-    padding: 10px;
-    padding-left: 0px;
-    border-radius: 5px;
-    background-color: var(--color-secondary);
-    border: none;
 }
 
-#chat-results li > pre {
-    background-color: none;
-    padding: none;
-    margin: none;
+#chat-results > li > .chat-message {
+    background-color: var(--color-secondary);
+    border-radius: 12px;
+    display: inline-block;
+    border-top-left-radius: 4px;
+    text-align: left;
+    padding: 10px;
 }
 
 #chat-input {
     background-color: var(--color-primary);
     position: sticky;
     bottom: 0;
+    padding-top: 0.5rem;
+    padding-bottom: 1rem;
 }
 
 #chat-input label {
