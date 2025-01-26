@@ -82,6 +82,10 @@ header {
     border-top-left-radius: 4px;
     display: inline-block;
     padding: 10px;
+
+    list-style-position: outside;
+    display: list-item !important;
+    list-style-type: "🤖  ";
 }
 
 #chat-input {

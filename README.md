@@ -1,6 +1,11 @@
 # Deep Seek
 
-A wrapper around DeepSeek which exposes an API for functions and json
+A wrapper around DeepSeek which exposes an API via Bun and Docker.
+
+## Prerequisites
+
+- Docker Desktop
+- Bun
 
 ## Quick Start
 
@@ -17,6 +22,12 @@ curl http://localhost:11434/api/generate -d '{
   "prompt": "Please tell me an interesting factoid?"
 }'
 
+# Start the Bun server to interact with web chat,
+# NOTE: this is optional and not required, and is
+# run outside the docker container.
+# link: http://localhost:3000/
+bun run dev
+
 # Stop the container
 docker compose down
 ```
@@ -32,7 +43,7 @@ ollama run deepseek-r1:7b
 ollama run deepseek-r1:8b
 ollama run deepseek-r1:14b
 ollama run deepseek-r1:32b
-ollama run deepseek-r1:70b
+ollama run deepseek-r1:70b   # Default
 ollama run deepseek-r1:671b
 ```
 
