@@ -27,19 +27,19 @@ The following example type represents the request body for the Llama2 model:
 
 ```ts
 type Llama2Request = {
-  "model": "string",      // Model name
-  "prompt": "string",     // Input prompt
-  "stream": boolean,      // Stream responses
-  "raw": boolean,         // Raw model output
-  "template": "string",   // Custom prompt template
-  "context": [],          // Previous context array
-  "system": "string",     // System prompt
-  "temperature": float,   // 0-1, default 0.8
-  "top_p": float,         // 0-1, default 0.9
-  "top_k": int,           // 1-100, default 40
-  "num_predict": int,     // Max tokens to generate
-  "stop": ["string"],     // Stop sequences
-  "repeat_penalty": float // 0-2, default 1.1
+  "model": "llam2",         // Model name
+  "prompt": "string",       // Input prompt
+  "stream": boolean,        // Stream responses
+  "raw": boolean,           // Raw model output
+  "template": "string",     // Custom prompt template
+  "context": [],            // Previous context array
+  "system": "string",       // System prompt
+  "temperature": float,     // 0-1, default 0.8
+  "top_p": float,           // 0-1, default 0.9
+  "top_k": int,             // 1-100, default 40
+  "num_predict": int,       // Max tokens to generate
+  "stop": ["string"],       // Stop sequences
+  "repeat_penalty": float   // 0-2, default 1.1
 }
 ```
 
