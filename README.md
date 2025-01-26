@@ -2,6 +2,40 @@
 
 A wrapper around DeepSeek which exposes an API for functions and json
 
+## Quick Start
+
+```bash
+# Start the docker container
+docker compose up -d
+
+# List all available models
+ollama list
+
+# Test via Docker Desktop CLI
+curl http://localhost:11434/api/generate -d '{
+  "model": "deepseek-r1:7b",
+  "prompt": "Please tell me an interesting factoid?"
+}'
+
+# Stop the container
+docker compose down
+```
+
+## DeepSeek Models
+
+- https://ollama.com/library/deepseek-r1
+
+```bash
+# DeepSeek Models
+ollama run deepseek-r1:1.5b
+ollama run deepseek-r1:7b
+ollama run deepseek-r1:8b
+ollama run deepseek-r1:14b
+ollama run deepseek-r1:32b
+ollama run deepseek-r1:70b
+ollama run deepseek-r1:671b
+```
+
 ## Installation
 
 ```bash
@@ -19,6 +53,21 @@ curl http://localhost:11434/api/generate -d '{
 # NOTE: To run this program, do the following:
 bun install
 bun run dev
+```
+
+## Ollama Commands
+
+The following are useful commands for interacting with the Ollama CLI:
+
+```bash
+# List all available models
+ollama list
+
+# Download a model
+ollama pull deepseek-r1:1.5b
+
+# Run a model
+ollama run deepseek-r1:1.5b
 ```
 
 ## Llama2 Model

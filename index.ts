@@ -1,38 +1,41 @@
 // run a prompt on the container
-import { api } from "./src/api";
-import { exec } from "./src/exec";
+import { api } from "./src/server/api";
+import { exec } from "./src/server/exec";
 
-console.log("[app] started!");
+const Pages = {
+  HOME: Bun.file("./src/client/index.html"),
+};
 
-const shouldStartNewContainer = false;
+class FileResponse extends Response {
+  static isStaticAsset(url: URL): boolean {
+    return url.pathname.startsWith("/assets/");
+  }
 
-// spawn the container on port 11434
+  static assetAt(path: string): FileResponse {
+    return new FileResponse(`./src/client${path}`);
+  }
 
-if (shouldStartNewContainer) {
-  const continer = await exec(
-    "docker run -d --name ollama -p 11434:11434 -v ollama-volume:/root/.ollama ollama-container",
-  );
+  constructor(path: string) {
+    const file = Bun.file(path);
+    const info = file.type;
+    console.log("[FileResponse] info:", info);
+    super(file, {
+      headers: {},
+    });
+  }
 }
 
-api.config({
-  port: 11434,
+const app = Bun.serve({
+  port: 3000,
+  async fetch(request, server) {
+    // console.log("[app] server:", server);
+    const url = new URL(request.url);
+    const pathName = url.pathname;
+
+    if (FileResponse.isStaticAsset(url)) {
+      return FileResponse.assetAt(pathName);
+    }
+
+    return new Response(Pages.HOME);
+  },
 });
-
-api
-  .prompt(
-    `
-[system]: You are a helpful chat agent.
-  1. Please only respond with answers to the questions.
-  2. Please do not provide any additional information.
-  3. Please do not ask any questions.
-  4. Please do not provide any opinions.
-  5. Please do not provide any information that is not based on facts.
-  6. Please keep answers as short as possible.
-  7. Please remain professional at all times.
-
-[user]:
-  Please tell me an interesting geography fact?
-`.trim(),
-  )
-  .then((data) => console.log("[app] data:", data))
-  .catch((error) => console.error("[app] error:", error));
