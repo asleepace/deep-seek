@@ -4,8 +4,8 @@ A wrapper around DeepSeek which exposes an API via Bun and Docker.
 
 ## Prerequisites
 
-- Docker Desktop
-- Bun
+- [Docker Desktop](https://www.docker.com/products/docker-desktop/)
+- [Bun](https://bun.sh/) (Optional)
 
 ## Quick Start
 
