@@ -30,9 +30,16 @@ body {
 }
 
 main {
-    max-width: 1200px;
     margin: 0 auto;
     padding: 0 20px;
+}
+
+header {
+    padding-top: 1em;
+    padding-bottom: 0.2em;
+    background-color: var(--color-primary);
+    position: sticky;
+    top: 0;
 }
 
 h1 {
@@ -70,13 +77,23 @@ ul {
 /* CHAT_SPECIFIC_ELEMENTS */
 
 #chat-output {
+    width: 840px;
+    min-height: 100svh;
     overflow-x: hidden;
     overflow-y: auto;
-    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    flex: 1;
+    flex-grow: 1;
+    scroll-behavior: smooth;
 }
 
 #chat-output > ul {
-    min-width: 600px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    max-width: 840px;
+    width: 100%;
     list-style: none;
     margin: 0 auto;
     padding: 0;
