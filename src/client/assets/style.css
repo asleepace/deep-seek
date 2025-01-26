@@ -2,8 +2,15 @@
     --color-primary: oklch(0.31 0.01 0);
     --color-secondary: oklch(0.41 0.01 0);
     --color-text: oklch(0.81 0.01 0);
+    --chat-width: 840px;
+    --border-radius: 12px;
+    --padding-light: 1em;
+    --scrollbar-color: oklch(0.41 0.01 0);
+    --scrollbar-hover: oklch(0.51 0.01 0);
+    --scrollbar-width: 24px;
 }
 
+/* Reset & Base */
 * {
     margin: 0;
     padding: 0;
@@ -11,117 +18,79 @@
 }
 
 html {
-    overflow-y: scroll;
     height: 100%;
+    overflow-x: hidden;
+    overscroll-behavior: none;
 }
 
 body {
-    min-height: 100%;
     background-color: var(--color-primary);
-    overscroll-behavior: none;
+
+    /* Font styling */
     font-family: "Roboto", sans-serif;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    padding: 1rem;
+    color: var(--color-text);
+    letter-spacing: -0.01em;
     font-size: large;
     font-weight: 550;
-    letter-spacing: -0.01em;
-    color: var(--color-text);
+
+    /* Layout */
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
 }
 
+/* Layout */
 main {
-    margin: 0 auto;
-    padding: 0 20px;
+    /* margin: 0 auto;
+    max-width: var(--chat-width);
+    height: 100vh;
+    overflow-x: hidden;
+    overflow-y: auto; */
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
 }
 
 header {
-    padding-top: 1em;
-    padding-bottom: 0.01em;
-    background-color: var(--color-primary);
     position: sticky;
     top: 0;
+    background-color: var(--color-primary);
+    padding-bottom: var(--padding-light);
+    flex-shrink: 0;
+    padding: var(--padding-light);
 }
 
-h1 {
-    font-family: sans-serif;
-    font-weight: 900;
-    font-size: 2.5rem;
-    margin-bottom: 20px;
-}
-
-h2 {
-    font-size: 2rem;
-    margin-bottom: 20px;
-}
-
-h3 {
-    font-size: 1.5rem;
-    margin-bottom: 20px;
-}
-
-p {
-    font-size: 1rem;
-    margin-bottom: 20px;
-}
-
-a {
-    color: #333;
-    text-decoration: none;
-}
-
-ul {
-    list-style: none;
-    width: 100%;
-}
-
-/* CHAT_SPECIFIC_ELEMENTS */
-
+/* Chat Elements */
 #chat-output {
-    width: 840px;
-    min-height: 100svh;
-    overflow-x: hidden;
-    overflow-y: auto;
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
+    width: var(--chat-width);
     flex: 1;
-    flex-grow: 1;
-    scroll-behavior: smooth;
-}
-
-#chat-output > ul {
-    overflow-x: hidden;
-    overflow-y: auto;
-    max-width: 840px;
-    width: 100%;
-    list-style: none;
     margin: 0 auto;
-    padding: 0;
 }
 
 #chat-results > li {
-    text-align: left;
-    list-style: none;
-    list-style-position: outside;
     margin-bottom: 10px;
 }
 
 #chat-results > li > .chat-message {
     background-color: var(--color-secondary);
-    border-radius: 12px;
-    display: inline-block;
+    border-radius: var(--border-radius);
     border-top-left-radius: 4px;
-    text-align: left;
+    display: inline-block;
     padding: 10px;
 }
 
 #chat-input {
-    background-color: var(--color-primary);
     position: sticky;
     bottom: 0;
-    padding-top: 0.5rem;
-    padding-bottom: 1rem;
+    background-color: var(--color-primary);
+    padding: 1rem;
+    padding-top: var(--padding-light);
+    flex-shrink: 0;
 }
 
 #chat-input label {
@@ -132,17 +101,41 @@ ul {
 }
 
 #chat-input textarea {
-    margin-top: 0.3rem;
-    background-color: var(--color-secondary);
-    color: var(--color-text);
-    overflow: hidden;
-    border-radius: 32px;
     width: 100%;
+    margin-top: 0.3rem;
     padding: 10px;
     font-size: 1rem;
-    border: 1px solid #333;
-    border-radius: 5px;
+    background-color: var(--color-secondary);
+    color: var(--color-text);
+    border: none;
+    border-radius: var(--border-radius);
+    overflow: hidden;
     white-space: pre-wrap;
     outline: none;
-    border: none;
+}
+
+/* Scroll Specific Styling */
+
+* {
+    scrollbar-width: thin;
+    scrollbar-color: var(--scrollbar-color) transparent;
+}
+
+*::-webkit-scrollbar {
+    width: var(--scrollbar-width);
+    position: fixed;
+    right: 0;
+}
+
+*::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+    background-color: var(--scrollbar-color);
+    border-radius: 8px;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+    background-color: var(--scrollbar-hover);
 }

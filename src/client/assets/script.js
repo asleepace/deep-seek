@@ -1,5 +1,11 @@
 /**
- * Simple non-fancy state and UI/X management for the chat.
+ * ## Chat Client
+ * By Colin Teahan (1/26/2025)
+ *
+ * Simple non-fancy state and UI/X management for the chat, make
+ * sure the `DEEP_SEEK_API_URL` is set to the correct endpoint and
+ * the docker container is running.
+ *
  */
 class Chat {
   static DEEP_SEEK_API_URL = "http://localhost:11434/api/generate";
@@ -102,13 +108,14 @@ class Chat {
  |
  */
 
+// W's in Chat
 const chat = new Chat();
 
 // DOM references
-const userPrompt = document.querySelector("textarea");
-const chatResults = document.getElementById("chat-results");
+const userPromptRef = document.querySelector("textarea");
+const chatResultsRef = document.getElementById("chat-results");
 
-chat.setParentRef(chatResults);
+chat.setParentRef(chatResultsRef);
 chat.render();
 
 /**
@@ -117,13 +124,13 @@ chat.render();
  * disabled states.
  */
 document.addEventListener("keydown", async (e) => {
-  if (!userPrompt.value) return;
-  if (userPrompt.disabled) return;
+  if (!userPromptRef.value) return;
+  if (userPromptRef.disabled) return;
   if (e.key === "Enter" && e.key !== "Shift") {
     try {
-      const message = userPrompt.value;
-      userPrompt.disabled = true;
-      userPrompt.value = "";
+      const message = userPromptRef.value;
+      userPromptRef.disabled = true;
+      userPromptRef.value = "";
       chat.onTriggerPrompt(message);
     } catch (error) {
       console.error("[chat] uh oh:", error);
@@ -132,7 +139,7 @@ document.addEventListener("keydown", async (e) => {
         response: error?.message,
       });
     } finally {
-      userPrompt.disabled = false;
+      userPromptRef.disabled = false;
       chat.render();
     }
   }
