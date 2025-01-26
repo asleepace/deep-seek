@@ -73,8 +73,12 @@ class Chat {
 
   sanitize(html) {
     return html
+      .trim()
       .replace("\n", "<br /><br />")
-      .replace(/<think>.*?<\/think>/g, /<pre>.*?<\/pre>/g); // Remove thinking process
+      .replace(/<think>.*?<\/think>/g, /<pre>.*?<\/pre>/g)
+      .replace(/<pre>.*?<\/pre>/g, (match) => {
+        return match.replace(/<br \/>/g, "\n");
+      });
   }
 
   render() {
@@ -92,7 +96,12 @@ class Chat {
   }
 }
 
-// initialize the chat
+/*
+ |
+ | ------------------------ Main ------------------------
+ |
+ */
+
 const chat = new Chat();
 
 // DOM references
@@ -100,17 +109,22 @@ const userPrompt = document.querySelector("textarea");
 const chatResults = document.getElementById("chat-results");
 
 chat.setParentRef(chatResults);
-chat.render(); // render once
+chat.render();
 
 /**
- * Attach the event listener to the send button.
+ * Attach the event listener to the send button, handle reading
+ * the user input and sending it to the chat and toggling
+ * disabled states.
  */
 document.addEventListener("keydown", async (e) => {
   if (!userPrompt.value) return;
   if (userPrompt.disabled) return;
   if (e.key === "Enter" && e.key !== "Shift") {
     try {
-      chat.onTriggerPrompt(userPrompt.value);
+      const message = userPrompt.value;
+      userPrompt.disabled = true;
+      userPrompt.value = "";
+      chat.onTriggerPrompt(message);
     } catch (error) {
       console.error("[chat] uh oh:", error);
       chat.insert({

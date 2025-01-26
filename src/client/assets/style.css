@@ -8,25 +8,26 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-
-    --webkit-font-smoothing: antialiased;
-    -ms-overflow-style: none;
 }
 
-html,
+html {
+    overflow-y: scroll;
+    height: 100%;
+}
+
 body {
+    min-height: 100%;
+    background-color: var(--color-primary);
+    overscroll-behavior: none;
     font-family: "Roboto", sans-serif;
-    min-height: 100svh;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    background-color: var(--color-primary);
     padding: 1rem;
     font-size: large;
     font-weight: 550;
-    letter-spacing: -0.04em;
+    letter-spacing: -0.01em;
     color: var(--color-text);
-    overflow: none;
 }
 
 main {
