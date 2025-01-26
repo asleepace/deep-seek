@@ -1,0 +1,17 @@
+{
+  "name": "deep-seek",
+  "module": "index.ts",
+  "type": "module",
+  "scripts": {
+    "dev": "bun run --watch index.ts",
+    "docker:build": "docker build -t ollama-container .",
+    "docker:run": "docker run -d --name ollama -p 11434:11434 -v ollama-volume:/root/.ollama ollama-container",
+    "docker:llama2": "docker exec -it ollama ollama run llama2"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  }
+}
