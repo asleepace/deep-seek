@@ -19,12 +19,14 @@
                 </ul>
             </section>
             <section id="chat-input">
-                <label class="label">Prompt</label>
-                <textarea
-                    id="chat-input-text"
-                    style="resize: none; overflow: hidden"
-                    oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px'"
-                ></textarea>
+                <div class="chat-frame">
+                    <textarea
+                        id="chat-input-text"
+                        placeholder="Enter prompt here..."
+                        style="resize: none; overflow: hidden"
+                        oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px'"
+                    ></textarea>
+                </div>
             </section>
         </main>
         <script src="/assets/script.js"></script>

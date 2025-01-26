@@ -80,6 +80,12 @@ class Chat {
   sanitize(html) {
     return html
       .trim()
+      .replace("<think><br>", "<think>")
+      .replace("<think><br>", "<think>")
+      .replace(
+        "<think>",
+        "<think><label class='chat-think'>Chain of thought</label>",
+      )
       .replace("\n", "<br /><br />")
       .replace(/<think>.*?<\/think>/g, /<pre>.*?<\/pre>/g)
       .replace(/<pre>.*?<\/pre>/g, (match) => {
@@ -93,7 +99,11 @@ class Chat {
       const uniqueId = `chat-message-${index}`;
       const listItem = document.createElement("li");
       const itemContent = document.createElement("div");
-      itemContent.classList.add("chat-message");
+      if (message.model === Chat.DEEP_SEEK_MODEL) {
+        itemContent.classList.add("chat-message");
+      } else {
+        itemContent.classList.add("user-message");
+      }
       itemContent.innerHTML = this.sanitize(message.response);
       listItem.setAttribute("id", uniqueId);
       listItem.appendChild(itemContent);
