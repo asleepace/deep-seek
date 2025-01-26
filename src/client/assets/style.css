@@ -1,21 +1,44 @@
+:root {
+    --color-primary: oklch(0.31 0.01 0);
+    --color-secondary: oklch(0.41 0.01 0);
+    --color-text: oklch(0.81 0.01 0);
+}
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+
+    --webkit-font-smoothing: antialiased;
+    -ms-overflow-style: none;
 }
 
+html,
 body {
     font-family: "Roboto", sans-serif;
     background-color: #f5f5f5;
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    background-color: var(--color-primary);
+    padding: 1rem;
+    font-size: large;
+    font-weight: 550;
+    letter-spacing: -0.04em;
+    color: var(--color-text);
+    overflow: none;
 }
 
-.container {
+main {
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 20px;
 }
 
 h1 {
+    font-family: sans-serif;
+    font-weight: 900;
     font-size: 2.5rem;
     margin-bottom: 20px;
 }
@@ -38,4 +61,63 @@ p {
 a {
     color: #333;
     text-decoration: none;
+}
+
+ul {
+    list-style: none;
+}
+
+/* CHAT_SPECIFIC_ELEMENTS */
+
+#chat-output {
+    min-height: 400px;
+    overflow-x: none;
+    overflow-y: auto;
+}
+
+#chat-results li {
+    text-align: left;
+    list-style: none;
+    list-style-position: outside;
+    margin-bottom: 10px;
+    padding: 10px;
+    padding-left: 0px;
+    border-radius: 5px;
+    background-color: var(--color-secondary);
+    border: none;
+}
+
+#chat-results li > pre {
+    background-color: none;
+    padding: none;
+    margin: none;
+}
+
+#chat-input {
+    background-color: var(--color-primary);
+    position: sticky;
+    bottom: 0;
+}
+
+#chat-input label {
+    font-size: small;
+    font-weight: bolder;
+    letter-spacing: 0.01rem;
+    margin-left: 0.3rem;
+}
+
+#chat-input textarea {
+    margin-top: 0.3rem;
+    background-color: var(--color-secondary);
+    color: var(--color-text);
+    overflow: hidden;
+    border-radius: 32px;
+    width: 100%;
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #333;
+    border-radius: 5px;
+    white-space: pre-wrap;
+    outline: none;
+    border: none;
 }

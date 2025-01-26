@@ -8,21 +8,26 @@
         <link rel="stylesheet" href="/assets/style.css" />
     </head>
     <body>
-        <header>
-            <h1>Deep Seek</h1>
-        </header>
         <main>
-            <section>
-                <h2>Search</h2>
-                <form id="search-form">
-                    <label for="search-input">Search for:</label>
-                    <input type="text" id="search-input" name="search-input" />
-                    <button type="submit">Search</button>
-                </form>
+            <header>
+                <h1>Deep Seek</h1>
+            </header>
+            <section id="chat-output">
+                <ul id="chat-results">
+                    <li>
+                        <pre>
+    Welcome to the example, how may I assist you today?</pre
+                        >
+                    </li>
+                </ul>
             </section>
-            <section>
-                <h2>Results</h2>
-                <ul id="results"></ul>
+            <section id="chat-input">
+                <label class="label">Prompt</label>
+                <textarea
+                    id="chat-input-text"
+                    style="resize: none; overflow: hidden"
+                    oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px'"
+                ></textarea>
             </section>
         </main>
         <script src="/assets/script.js"></script>
