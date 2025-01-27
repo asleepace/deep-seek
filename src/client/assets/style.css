@@ -1,4 +1,6 @@
 :root {
+    --color-code-txt: oklch(0.88 0.31 137.1); /* neon green */
+    --color-code-bg: oklch(0.16 0 0);
     --color-primary: oklch(0.12 0 0);
     --color-secondary: oklch(0.22 0 0);
     --color-lightest: oklch(0.32 0 0);
@@ -147,6 +149,28 @@ think > label {
     font-weight: 400;
     letter-spacing: 0.01rem;
     margin-left: 0.3rem;
+}
+
+pre {
+    flex: 1;
+    align-self: stretch;
+    width: 100%;
+    background: var(--color-dark);
+    padding: 0.4em;
+    margin: 0.6em 0;
+    border-radius: 0.4em;
+    overflow: auto;
+    min-width: 0;
+}
+
+code {
+    white-space: pre-wrap; /* Better line wrapping */
+    word-break: break-word; /* Prevent horizontal overflow */
+    font-family: monospace;
+    font-size: 14px;
+    line-height: 1.4;
+    background-color: var(--color-dark);
+    color: var(--color-primary);
 }
 
 .fade-overlay {

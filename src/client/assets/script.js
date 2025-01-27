@@ -14,6 +14,7 @@ class Chat {
 
   // DOM References
   static {
+    this.mainRef = document.getElementsByTagName("main").item(0);
     this.promptRef = document.querySelector("textarea");
     this.resultsRef = document.getElementById("chat-results");
 
@@ -22,10 +23,9 @@ class Chat {
   }
 
   static scrollToBottom() {
-    const chatOutput = document.getElementsByTagName("main").item(0);
     window.requestAnimationFrame(() => {
-      const scrollHeight = chatOutput.scrollHeight;
-      chatOutput.scrollTo({
+      const scrollHeight = Chat.mainRef.scrollHeight;
+      Chat.mainRef.scrollTo({
         top: scrollHeight,
         behavior: "smooth",
       });
@@ -48,8 +48,6 @@ class Chat {
   prompt(message) {
     // NOTE: This is completely arbitrary, but the deep-seek team recommends doing it this way
     // for now, as everything should be included in a single prompt.
-    //
-    // <previous_messages>${JSON.stringify(this.messages)}</previous_messages>
     const prompt = `
 <instructions>
   You are a helpful AI assistant, please do the following:
@@ -127,8 +125,9 @@ ${message?.trim()}
   sanitize(html) {
     return html
       .trim()
+      .replace(/```(.*?)```/gs, "<pre><code>$1</code></pre>")
       .replace("\n", "<br /><br />")
-      .replace("<think><br>", "<think>")
+      .replace("<think><br><br>", "<think>")
       .replace("<think><br>", "<think>")
       .replace(
         "<think>",
