@@ -41,12 +41,12 @@ docker compose down
 ```bash
 # DeepSeek Models
 ollama run deepseek-r1:1.5b
-ollama run deepseek-r1:7b
+ollama run deepseek-r1:7b    # Default
 ollama run deepseek-r1:8b
 ollama run deepseek-r1:14b
 ollama run deepseek-r1:32b
-ollama run deepseek-r1:70b   # Default
-ollama run deepseek-r1:671b
+ollama run deepseek-r1:70b
+ollama run deepseek-r1:671b # o1 Level
 ```
 
 ## Installation
