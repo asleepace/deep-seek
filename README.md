@@ -59,7 +59,7 @@ bun run docker:run
 
 # You can test it's running by executing the following:
 curl http://localhost:11434/api/generate -d '{
-  "model": "llama2",
+  "model": "deepseek-r1:7b",
   "prompt": "Hello!"
 }'
 
@@ -91,13 +91,15 @@ This project is faily minimal and contains some code for the Bun server which re
 - `src/server/*` - Contains the Bun server code.
 - `src/client/*` - Contains the frontend code for the chat interface.
 
+The UI is just basic HTML, CSS, and JS and is really only meant to help test the model.
+
 ## Llama2 Model
 
 The following example type represents the request body for the Llama2 model, although it seems all models on Ollama support these params, however, the deep seek team says the latest model may not work as expected with items like **context** or **system**.
 
 ```ts
-type Llama2Request = {
-  "model": "llama2",         // Model name
+type OllamaRequest = {
+  "model": "deepseek-r1:7b",// Model name
   "prompt": "string",       // Input prompt
   "stream": boolean,        // Stream responses
   "raw": boolean,           // Raw model output
