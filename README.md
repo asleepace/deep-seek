@@ -85,11 +85,11 @@ ollama run deepseek-r1:1.5b
 
 ## Llama2 Model
 
-The following example type represents the request body for the Llama2 model:
+The following example type represents the request body for the Llama2 model, although it seems all models on Ollama support these params, however, the deep seek team says the latest model may not work as expected with items like **context** or **system**.
 
 ```ts
 type Llama2Request = {
-  "model": "llam2",         // Model name
+  "model": "llama2",         // Model name
   "prompt": "string",       // Input prompt
   "stream": boolean,        // Stream responses
   "raw": boolean,           // Raw model output
