@@ -27,7 +27,7 @@ curl http://localhost:11434/api/generate -d '{
 # Start the Bun server to interact with web chat,
 # NOTE: this is optional and not required, and is
 # run outside the docker container.
-# link: http://localhost:3000/
+# url: http://localhost:3000/
 bun run dev
 
 # Stop the container
@@ -41,12 +41,12 @@ docker compose down
 ```bash
 # DeepSeek Models
 ollama run deepseek-r1:1.5b
-ollama run deepseek-r1:7b    # Default
+ollama run deepseek-r1:7b       # Default
 ollama run deepseek-r1:8b
 ollama run deepseek-r1:14b
 ollama run deepseek-r1:32b
 ollama run deepseek-r1:70b
-ollama run deepseek-r1:671b # o1 Level
+ollama run deepseek-r1:671b     # o1 Level
 ```
 
 ## Installation
