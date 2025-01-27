@@ -105,7 +105,7 @@ type Llama2Request = {
 }
 ```
 
-## About
+## Additional Resources
 
-Currently this project just creates a docker container with the specified AI model,
-the Bun portion exposes an TypeScript API to interact with the model.
+- [DeepSeek-R1 GitHub Page](https://github.com/deepseek-ai/DeepSeek-R1)
+- [Ollama Website](https://ollama.com/)
