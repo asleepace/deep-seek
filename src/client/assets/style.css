@@ -223,6 +223,7 @@ code {
 }
 
 .user-message {
+    display: flex;
     margin-left: auto;
     border-top-right-radius: 4px;
     background-color: var(--color-lightest);

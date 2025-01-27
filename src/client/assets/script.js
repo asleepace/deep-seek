@@ -125,7 +125,7 @@ ${message?.trim()}
   sanitize(html) {
     return html
       .trim()
-      .replace(/```(.*?)```/gs, "<pre><code>$1</code></pre>")
+      .replace(/```(.*?)```/gs, "<pre><code>//$1</code></pre>")
       .replace("\n", "<br /><br />")
       .replace("<think><br><br>", "<think>")
       .replace("<think><br>", "<think>")
