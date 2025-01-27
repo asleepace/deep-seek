@@ -99,7 +99,9 @@ This project is faily minimal and contains some code for the Bun server which re
 
 The UI is just basic HTML, CSS, and JS and is really only meant to help test the model.
 
-## Llama2 Model
+**NOTE**: the chat doesn't support markdown, LaTeX or other fancy things at the moment.
+
+## Ollama Params
 
 The following example type represents the request body for the Llama2 model, although it seems all models on Ollama support these params, however, the deep seek team says the latest model may not work as expected with items like **context** or **system**.
 
