@@ -38,6 +38,7 @@ class Chat {
   options = {};
   isSending = false;
   messages = [];
+  lastMesageContext = undefined;
 
   constructor(options = {}) {
     console.log("Hello, world!");
@@ -47,18 +48,17 @@ class Chat {
   prompt(message) {
     // NOTE: This is completely arbitrary, but the deep-seek team recommends doing it this way
     // for now, as everything should be included in a single prompt.
+    //
+    // <previous_messages>${JSON.stringify(this.messages)}</previous_messages>
     const prompt = `
-<system>
+<instructions>
   You are a helpful AI assistant, please do the following:
-
     1. Please provide short and concise responses.
     2. Please answer questions truthfully.
     3. Please only answer the question in the "current_prompt" field.
-    4. Please use context from the "previous_context" field.
-    5. Please do not repeat yourself or previous responses, unless asked.
-    6. Try to answer in 1-3 sentences.
-</system>
-<previous_context>${JSON.stringify(this.messages)}</previous_context>
+    4. Please try not repeat yourself or the question unless asked.
+    5. Try to answer in 1-3 sentences.
+</instructions>
 <current_prompt>
 ${message?.trim()}
 </current_prompt>
@@ -70,7 +70,8 @@ ${message?.trim()}
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        temperature: 0.7,
+        temperature: 0.6,
+        context: this.lastMesageContext,
         model: Chat.DEEP_SEEK_MODEL,
         prompt: prompt,
       }),
@@ -98,6 +99,12 @@ ${message?.trim()}
     this.render();
     for await (const chunk of response.body) {
       const data = this.decodeChunk(chunk);
+      console.log("[data] data:", data);
+      // set context from last message
+      if (data.context) {
+        console.log("[data] setting lastMessageContext:", data.context);
+        this.lastMesageContext = data.context;
+      }
       messageRef.response += data.response;
       this.render();
     }
