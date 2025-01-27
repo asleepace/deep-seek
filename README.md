@@ -87,10 +87,11 @@ ollama run deepseek-r1:1.5b
 
 This project is faily minimal and contains some code for the Bun server which returns some basic frontend code for a chat interface.
 
+- `./docker-compose.yml` - Docker compose file for running the DeepSeek container.
 - `./index.ts` - Bun entry point
 - `./src/*` - Root project directory.
-- `./src/server/*` - Contains the Bun server code.
-- `./src/client/*` - Contains the HTML, CSS & JS code for the chat.
+- `./src/server/*` - Contains the Bun server-side code.
+- `./src/client/*` - Contains the HTML, CSS & JS client-side code for chat.
 
 The UI is just basic HTML, CSS, and JS and is really only meant to help test the model.
 
