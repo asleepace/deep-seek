@@ -1,6 +1,4 @@
 // run a prompt on the container
-import { api } from "./src/server/api";
-import { exec } from "./src/server/exec";
 
 const Pages = {
   HOME: Bun.file("./src/client/index.html"),
@@ -8,11 +6,13 @@ const Pages = {
 
 class FileResponse extends Response {
   static isStaticAsset(url: URL): boolean {
-    return url.pathname.startsWith("/assets/");
+    return url.pathname.endsWith(".js") || url.pathname.endsWith(".css");
   }
 
   static assetAt(path: string): FileResponse {
-    return new FileResponse(`./src/client${path}`);
+    const assetFilePath = `./src/client${path}`;
+    console.log("[FileResponse] serving asset: ", assetFilePath);
+    return new FileResponse(assetFilePath);
   }
 
   constructor(path: string) {
@@ -28,7 +28,7 @@ class FileResponse extends Response {
 const app = Bun.serve({
   port: 3000,
   async fetch(request, server) {
-    // console.log("[app] server:", server);
+    console.log("[app] server:", request.url);
     const url = new URL(request.url);
     const pathName = url.pathname;
 
@@ -39,3 +39,5 @@ const app = Bun.serve({
     return new Response(Pages.HOME);
   },
 });
+
+console.log("[app] now listening on", `http://${app.hostname}:${app.port}`);
