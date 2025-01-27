@@ -18,19 +18,17 @@ the API on port `11434` and the optional Bun server will serve a simple we chat 
 # Start the docker container (first time running may take longer)
 docker compose up -d
 
-# List all available models
+# List all available models (via Docker Desktop CLI)
 ollama list
 
-# Test via Docker Desktop CLI
+# Quickly test the model is running (via Docker Desktop CLI)
 curl http://localhost:11434/api/generate -d '{
   "model": "deepseek-r1:7b",
   "prompt": "Please tell me an interesting factoid?"
 }'
 
-# Start the Bun server to interact with web chat,
-# NOTE: this is optional and not required, and is
-# run outside the docker container.
-# url: http://localhost:3000/
+# (Optional) Start the Bun server to interact with web chat,
+# run outside the container to chat on http://localhost:3000/
 bun run dev
 
 # Stop the container
