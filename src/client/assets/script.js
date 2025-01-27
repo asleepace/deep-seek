@@ -16,6 +16,9 @@ class Chat {
   static {
     this.promptRef = document.querySelector("textarea");
     this.resultsRef = document.getElementById("chat-results");
+
+    const modelNameRef = document.getElementById("model-name");
+    modelNameRef.innerHTML = Chat.DEEP_SEEK_MODEL;
   }
 
   static scrollToBottom() {
