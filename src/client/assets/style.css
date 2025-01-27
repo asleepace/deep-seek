@@ -19,6 +19,7 @@
 }
 
 /* Reset & Base */
+
 * {
     margin: 0;
     padding: 0;
@@ -94,26 +95,39 @@ body {
     overflow: hidden;
 }
 
+/* Helpers */
+
+.opacity-80 {
+    opacity: 0.8;
+}
+
 /* Layout */
+
 main {
-    /* margin: 0 auto;
-    max-width: var(--chat-width);
-    height: 100vh;
-    overflow-x: hidden;
-    overflow-y: auto; */
     flex: 1;
     overflow-y: auto;
     display: flex;
     flex-direction: column;
 }
 
+h1 {
+    font-size: 3em;
+    font-weight: 700;
+    margin-bottom: 0.3em;
+}
+
 header {
     position: sticky;
-    top: 0;
+    top: 0.2em;
+    padding: 1em;
     background-color: transparent;
     padding-bottom: var(--padding-light);
     flex-shrink: 0;
-    padding: var(--padding-light);
+}
+
+header > label {
+    letter-spacing: 0.04px;
+    opacity: 60%;
 }
 
 think {
@@ -201,6 +215,8 @@ think > label {
     margin-bottom: 10px;
 }
 
+/* Chat Input  */
+
 #chat-input {
     position: sticky;
     bottom: 0;
@@ -214,20 +230,10 @@ think > label {
     width: var(--chat-width);
     display: flex;
     flex-direction: column;
-    background-color: black;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0), rgba(0, 0, 0, 1));
     border-radius-top-left: var(--border-radius);
     border-radius-top-right: var(--border-radius);
     margin: 0 auto;
-}
-
-#chat-input label {
-    display: inline-block;
-    border-radius: var(--border-radius);
-    font-size: small;
-    font-weight: bolder;
-    letter-spacing: 0.01rem;
-    padding: 0.5em;
-    margin-left: 1rem;
 }
 
 #chat-input textarea {
@@ -245,6 +251,4 @@ think > label {
     white-space: pre-wrap;
     outline: none;
     border: 0.02em solid var(--color-border);
-
-    drop-shadow: 0 -2 0.5em black;
 }
