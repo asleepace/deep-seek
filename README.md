@@ -1,10 +1,13 @@
 # Deep Seek
 
-A wrapper around DeepSeek which exposes an API via Bun and Docker.
+A simple wrapper around DeepSeek which exposes an API via Bun and Docker.
 
 <img width="1725" alt="Screenshot 2025-01-26 at 4 34 20 PM" src="https://github.com/user-attachments/assets/9d730e27-ba5c-4d50-b949-dda701127e1e" />
 
 ## Prerequisites
+
+NOTE: The Docker commands will start a container running Ollama and then download the DeepSeek model. This container exposes
+the API on port `11434` and the optional Bun server will serve a simple we chat interface at `http://localhost:3000`.
 
 - [Docker Desktop](https://www.docker.com/products/docker-desktop/)
 - [Bun](https://bun.sh/) (Optional)
@@ -92,6 +95,9 @@ This project is faily minimal and contains some code for the Bun server which re
 - `./src/*` - Root project directory.
 - `./src/server/*` - Contains the Bun server-side code.
 - `./src/client/*` - Contains the HTML, CSS & JS client-side code for chat.
+- `./src/client/index.html` - The main HTML file for the chat interface.
+- `./src/client/assets/style.css` - The CSS file for the chat interface.
+- `./src/client/assets/script.js` - The JS file for the chat interface. (Client logic)
 
 The UI is just basic HTML, CSS, and JS and is really only meant to help test the model.
 
