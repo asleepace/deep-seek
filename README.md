@@ -83,6 +83,14 @@ ollama pull deepseek-r1:1.5b
 ollama run deepseek-r1:1.5b
 ```
 
+## Project Structure
+
+This project is faily minimal and contains some code for the Bun server which returns some basic frontend code for a chat interface.
+
+- `src/` - Contains the main code for the Bun server.
+- `src/server/*` - Contains the Bun server code.
+- `src/client/*` - Contains the frontend code for the chat interface.
+
 ## Llama2 Model
 
 The following example type represents the request body for the Llama2 model, although it seems all models on Ollama support these params, however, the deep seek team says the latest model may not work as expected with items like **context** or **system**.
