@@ -1,4 +1,4 @@
-# Deep Seek
+# Deep Seek 🐋
 
 A simple wrapper around DeepSeek which exposes an API via Bun and Docker.
 
