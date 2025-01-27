@@ -8,8 +8,26 @@
  *
  */
 class Chat {
+  // Model Constants
   static DEEP_SEEK_API_URL = "http://localhost:11434/api/generate";
   static DEEP_SEEK_MODEL = "deepseek-r1:7b";
+
+  // DOM References
+  static {
+    this.promptRef = document.querySelector("textarea");
+    this.resultsRef = document.getElementById("chat-results");
+  }
+
+  static scrollToBottom() {
+    const chatOutput = document.getElementsByTagName("main").item(0);
+    window.requestAnimationFrame(() => {
+      const scrollHeight = chatOutput.scrollHeight;
+      chatOutput.scrollTo({
+        top: scrollHeight,
+        behavior: "smooth",
+      });
+    });
+  }
 
   static prompt(message) {
     return fetch(Chat.DEEP_SEEK_API_URL, {
@@ -23,6 +41,8 @@ class Chat {
       }),
     });
   }
+
+  /* * * * instance properties * * * */
 
   decoder = new TextDecoder();
   options = {};
@@ -60,17 +80,13 @@ class Chat {
     this.render();
   }
 
-  setParentRef(chatListRef) {
-    this.chatListRef = chatListRef;
-  }
-
   decodeChunk(chunk) {
     const text = this.decoder.decode(chunk);
     return JSON.parse(text);
   }
 
   clearChat() {
-    this.chatListRef.innerHTML = "";
+    Chat.resultsRef.innerHTML = "";
   }
 
   getLastMessage() {
@@ -80,13 +96,13 @@ class Chat {
   sanitize(html) {
     return html
       .trim()
+      .replace("\n", "<br /><br />")
       .replace("<think><br>", "<think>")
       .replace("<think><br>", "<think>")
       .replace(
         "<think>",
         "<think><label class='chat-think'>Chain of thought</label>",
       )
-      .replace("\n", "<br /><br />")
       .replace(/<think>.*?<\/think>/g, /<pre>.*?<\/pre>/g)
       .replace(/<pre>.*?<\/pre>/g, (match) => {
         return match.replace(/<br \/>/g, "\n");
@@ -107,7 +123,8 @@ class Chat {
       itemContent.innerHTML = this.sanitize(message.response);
       listItem.setAttribute("id", uniqueId);
       listItem.appendChild(itemContent);
-      this.chatListRef.appendChild(listItem);
+      Chat.resultsRef.appendChild(listItem);
+      Chat.scrollToBottom();
     });
   }
 }
@@ -118,15 +135,7 @@ class Chat {
  |
  */
 
-// W's in Chat
 const chat = new Chat();
-
-// DOM references
-const userPromptRef = document.querySelector("textarea");
-const chatResultsRef = document.getElementById("chat-results");
-
-chat.setParentRef(chatResultsRef);
-chat.render();
 
 /**
  * Attach the event listener to the send button, handle reading
@@ -134,13 +143,13 @@ chat.render();
  * disabled states.
  */
 document.addEventListener("keydown", async (e) => {
-  if (!userPromptRef.value) return;
-  if (userPromptRef.disabled) return;
+  if (!Chat.promptRef.value) return;
+  if (Chat.promptRef.disabled) return;
   if (e.key === "Enter" && e.key !== "Shift") {
     try {
-      const message = userPromptRef.value;
-      userPromptRef.disabled = true;
-      userPromptRef.value = "";
+      const message = Chat.promptRef.value;
+      Chat.promptRef.disabled = true;
+      Chat.promptRef.value = "";
       chat.onTriggerPrompt(message);
     } catch (error) {
       console.error("[chat] uh oh:", error);
@@ -149,7 +158,7 @@ document.addEventListener("keydown", async (e) => {
         response: error?.message,
       });
     } finally {
-      userPromptRef.disabled = false;
+      Chat.promptRef.disabled = false;
       chat.render();
     }
   }
