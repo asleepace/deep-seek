@@ -32,19 +32,6 @@ class Chat {
     });
   }
 
-  static prompt(message) {
-    return fetch(Chat.DEEP_SEEK_API_URL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        model: Chat.DEEP_SEEK_MODEL,
-        prompt: message?.trim(),
-      }),
-    });
-  }
-
   /* * * * instance properties * * * */
 
   decoder = new TextDecoder();
@@ -55,6 +42,39 @@ class Chat {
   constructor(options = {}) {
     console.log("Hello, world!");
     this.options = options;
+  }
+
+  prompt(message) {
+    // NOTE: This is completely arbitrary, but the deep-seek team recommends doing it this way
+    // for now, as everything should be included in a single prompt.
+    const prompt = `
+<system>
+  You are a helpful AI assistant, please do the following:
+
+    1. Please provide short and concise responses.
+    2. Please answer questions truthfully.
+    3. Please only answer the question in the "current_prompt" field.
+    4. Please use context from the "previous_context" field.
+    5. Please do not repeat yourself or previous responses, unless asked.
+    6. Try to answer in 1-3 sentences.
+</system>
+<previous_context>${JSON.stringify(this.messages)}</previous_context>
+<current_prompt>
+${message?.trim()}
+</current_prompt>
+    `;
+
+    return fetch(Chat.DEEP_SEEK_API_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        temperature: 0.7,
+        model: Chat.DEEP_SEEK_MODEL,
+        prompt: prompt,
+      }),
+    });
   }
 
   insert({ model = Chat.DEEP_SEEK_MODEL, response = "" }) {
@@ -73,8 +93,9 @@ class Chat {
 
   async onTriggerPrompt(message) {
     this.insert({ model: "user", response: message });
-    const response = await Chat.prompt(message);
+    const response = await this.prompt(message);
     const messageRef = this.insert({ response: "" });
+    this.render();
     for await (const chunk of response.body) {
       const data = this.decodeChunk(chunk);
       messageRef.response += data.response;
