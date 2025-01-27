@@ -22,6 +22,22 @@ class Chat {
     modelNameRef.innerHTML = Chat.DEEP_SEEK_MODEL;
   }
 
+  static startAnimation() {
+    requestAnimationFrame(() => {
+      console.log("[chat] starting animation!");
+      const animatedRingRef = document.getElementById("animated-ring");
+      animatedRingRef.classList.add("active");
+    });
+  }
+
+  static stopAnimation() {
+    requestAnimationFrame(() => {
+      console.log("[chat] stopping animation!");
+      const animatedRingRef = document.getElementById("animated-ring");
+      animatedRingRef.classList.remove("active");
+    });
+  }
+
   static scrollToBottom() {
     window.requestAnimationFrame(() => {
       const scrollHeight = Chat.mainRef.scrollHeight;
@@ -91,6 +107,7 @@ ${message?.trim()}
   }
 
   async onTriggerPrompt(message) {
+    Chat.startAnimation();
     this.insert({ model: "user", response: message });
     const response = await this.prompt(message);
     const messageRef = this.insert({ response: "" });
@@ -107,6 +124,7 @@ ${message?.trim()}
       this.render();
     }
     this.render();
+    Chat.stopAnimation();
   }
 
   decodeChunk(chunk) {
@@ -125,7 +143,7 @@ ${message?.trim()}
   sanitize(html) {
     return html
       .trim()
-      .replace(/```(.*?)```/gs, "<pre><code>//$1</code></pre>")
+      .replace(/```(.*?)```/gs, "<pre><code>// $1</code></pre>")
       .replace("\n", "<br /><br />")
       .replace("<think><br><br>", "<think>")
       .replace("<think><br>", "<think>")

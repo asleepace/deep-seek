@@ -64,6 +64,7 @@ html {
 }
 
 body {
+    position: relative;
     /* background-color: var(--color-primary); */
     background-color: black;
 
@@ -97,6 +98,60 @@ body {
     overflow: hidden;
 }
 
+.rainbow-border {
+    position: absolute;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+    inset: 0;
+    /* opacity: 0; */
+}
+
+.rainbow-border.active::before {
+    opacity: 1;
+}
+
+.rainbow-border::before {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+    content: "";
+    /* z-index: 25; */
+    position: absolute;
+    inset: -2px;
+    border-radius: 4;
+    padding: 2px;
+    background: linear-gradient(
+        45deg,
+        #ff0000,
+        #ff8000,
+        #ffff00,
+        #00ff00,
+        #0000ff,
+        #8000ff,
+        #ff0080
+    );
+    background-size: 400% 400%;
+    animation: rainbow 10s linear infinite;
+    -webkit-mask:
+        linear-gradient(#000 0 0) content-box,
+        linear-gradient(#000 0 0);
+    mask:
+        linear-gradient(#000 0 0) content-box,
+        linear-gradient(#000 0 0);
+    mask-composite: exclude;
+    -webkit-mask-composite: destination-out;
+    filter: blur(6px);
+}
+
+@keyframes rainbow {
+    0% {
+        background-position: 0% 50%;
+    }
+    100% {
+        background-position: 400% 50%;
+    }
+}
+
 /* Helpers */
 
 .opacity-80 {
@@ -110,6 +165,7 @@ main {
     overflow-y: auto;
     display: flex;
     flex-direction: column;
+    height: 100%;
 }
 
 h1 {
@@ -155,7 +211,8 @@ pre {
     flex: 1;
     align-self: stretch;
     width: 100%;
-    background: var(--color-dark);
+    color: var(--color-code-txt);
+    background: var(--color-code-bg);
     padding: 0.4em;
     margin: 0.6em 0;
     border-radius: 0.4em;
@@ -169,8 +226,8 @@ code {
     font-family: monospace;
     font-size: 14px;
     line-height: 1.4;
-    background-color: var(--color-dark);
-    color: var(--color-primary);
+    color: var(--color-code-txt);
+    background: var(--color-code-bg);
 }
 
 .fade-overlay {
@@ -246,10 +303,11 @@ code {
 #chat-input {
     position: sticky;
     bottom: 0;
-    background-color: transparent;
     padding: 0;
     padding-top: var(--padding-light);
     flex-shrink: 0;
+    z-index: 100;
+    background: linear-gradient(0deg, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0));
 }
 
 #chat-input > .chat-frame {
