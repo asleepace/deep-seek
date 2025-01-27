@@ -2,6 +2,8 @@
 
 A wrapper around DeepSeek which exposes an API via Bun and Docker.
 
+<img width="1725" alt="Screenshot 2025-01-26 at 4 34 20 PM" src="https://github.com/user-attachments/assets/9d730e27-ba5c-4d50-b949-dda701127e1e" />
+
 ## Prerequisites
 
 - [Docker Desktop](https://www.docker.com/products/docker-desktop/)
@@ -10,7 +12,7 @@ A wrapper around DeepSeek which exposes an API via Bun and Docker.
 ## Quick Start
 
 ```bash
-# Start the docker container
+# Start the docker container (first time running may take longer)
 docker compose up -d
 
 # List all available models
