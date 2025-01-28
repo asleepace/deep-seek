@@ -204,7 +204,7 @@ think > label {
     text-decoration: underline;
     font-weight: 400;
     letter-spacing: 0.01rem;
-    margin-left: 0.3rem;
+    margin-left: 0.2rem;
 }
 
 pre {
@@ -228,6 +228,12 @@ code {
     line-height: 1.4;
     color: var(--color-code-txt);
     background: var(--color-code-bg);
+}
+
+.code-inline {
+    padding: 4px;
+    border-radius: 4px;
+    margin: 0 0.2em;
 }
 
 .fade-overlay {

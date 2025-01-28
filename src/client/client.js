@@ -134,13 +134,16 @@ class Chat {
     });
   }
 
+  // Currently just saving the model (role) and response,
+  // and the time it was created. This will create a new
+  // message in the chat history and render it, then return
+  // the message.
   insert({ model = Chat.DEEP_SEEK_MODEL, response = "" }) {
     const message = {
       model,
       response,
       created_at: new Date().toISOString(),
     };
-
     this.messages.push(message);
     requestAnimationFrame(() => {
       this.render();
