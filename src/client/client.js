@@ -253,6 +253,49 @@ class Chat {
   }
 }
 
+/**
+ * Create special chat-message HTML element which handles
+ * parsing and rendering the chat messages.
+ */
+
+class ChatMessage extends HTMLElement {
+  #state = {
+    message: "",
+  };
+
+  constructor() {
+    super();
+    this.attachShadow({ mode: "open" });
+  }
+
+  appendMessage(message) {
+    this.#state.message = message;
+    this.render();
+  }
+
+  connectedCallback() {
+    this.render();
+  }
+
+  render() {
+    this.shadowRoot.innerHTML = `
+      <style>
+        .chat-message {
+          display: block;
+          padding: 1rem;
+          margin: 1rem;
+          border-radius: 0.5rem;
+          background-color: #f5f5f5;
+          box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.1);
+        }
+      </style>
+      <div class="chat-message">
+        <slot></slot>
+      </div>
+    `;
+  }
+}
+
 /*
  |
  | ------------------------ Main ------------------------
