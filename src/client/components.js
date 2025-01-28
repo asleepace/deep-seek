@@ -5,6 +5,20 @@
 const nextCodeBlockIndex = (str) => str.indexOf("```");
 const nextCodeInlineIndex = (str) => str.indexOf("`");
 
+// class Think extends HTMLElement {
+//   static {
+//     console.log("[think] registering <think />");
+//     customElements.define("think", Think);
+//   }
+
+//   constructor() {
+//     super();
+//     this.attachShadow({ mode: "open" });
+//     this.containerRef = document.createElement("div");
+//     this.shadowRoot.appendChild(this.containerRef);
+//   }
+// }
+
 /**
  * ## Chat Message
  *
@@ -32,6 +46,8 @@ class ChatMessage extends HTMLElement {
     super();
     this.attachShadow({ mode: "open" });
     this.containerRef = document.createElement("div");
+    this.thinkRef = document.createElement("think");
+    this.containerRef.appendChild(this.thinkRef);
     this.shadowRoot.appendChild(this.containerRef);
   }
 
