@@ -92,7 +92,7 @@ body {
 
     /* Layout */
     height: 100vh;
-    width: 100%;
+    width: 100vw;
     display: flex;
     flex-direction: column;
     overflow: hidden;
@@ -100,7 +100,9 @@ body {
 
 .rainbow-border {
     position: absolute;
-    border: 2px solid transparent;
+    height: 100vh;
+    width: 100vw;
+    border: 4px solid transparent;
     background-clip: padding-box;
     inset: 0;
     pointer-events: none;
@@ -178,7 +180,7 @@ header {
     position: sticky;
     top: 0.2em;
     padding: 1em;
-    background-color: transparent;
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0), rgba(0, 0, 0, 1));
     padding-bottom: var(--padding-light);
     flex-shrink: 0;
 }
@@ -228,6 +230,15 @@ code {
     line-height: 1.4;
     color: var(--color-code-txt);
     background: var(--color-code-bg);
+}
+
+code .inline-code {
+    font-family: monospace;
+    font-size: 0.9em;
+    padding: 0.2em 0.4em;
+    border-radius: 0.4em;
+    background: var(--color-code-bg);
+    color: var(--color-code-txt);
 }
 
 .fade-overlay {
