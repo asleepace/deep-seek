@@ -234,21 +234,23 @@ class Chat {
   // the entire chat history, it's not optimized, but it's
   // good enough for now.
   render() {
-    this.clearChat();
-    this.messages.forEach((message, index) => {
-      const uniqueId = `chat-message-${index}`;
-      const listItem = document.createElement("li");
-      const itemContent = document.createElement("div");
-      if (message.model === Chat.DEEP_SEEK_MODEL) {
-        itemContent.classList.add("chat-message");
-      } else {
-        itemContent.classList.add("user-message");
+    const chatOutput = document.getElementById("chat-output");
+    if (!chatOutput) {
+      console.error("[chat] chat-output not found!");
+      return;
+    }
+
+    const children = Array.from(chatOutput.children ?? []);
+    const lastIndex = this.messages.length - 1;
+    this.messages.forEach((message, i) => {
+      if (!children[i]) {
+        const chatMessage = document.createElement("chat-message");
+        chatMessage.textContent = message.response;
+        chatOutput.appendChild(chatMessage);
       }
-      itemContent.innerHTML = this.sanitize(message.response);
-      listItem.setAttribute("id", uniqueId);
-      listItem.appendChild(itemContent);
-      Chat.resultsRef.appendChild(listItem);
-      Chat.scrollToBottom();
+      if (children[i] && i === lastIndex) {
+        children[i].textContent = message.response;
+      }
     });
   }
 }
@@ -259,40 +261,146 @@ class Chat {
  */
 
 class ChatMessage extends HTMLElement {
+  static get observedAttributes() {
+    return ["textContent", "text-content"];
+  }
+  static {
+    console.log("[client] defining custom chat-message element!");
+    window.customElements.define("chat-message", ChatMessage);
+  }
+  static style = `
+      :host {
+          display: flex;
+          font-family: system-ui, -apple-system, sans-serif;
+          padding: 1em;
+          border-none;
+          border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      }
+      .container {
+          color: white;
+          flex-direction: column;
+          flex-shrink: 1;
+          display: flex;
+          padding: 1em;
+      }
+      p {
+          margin: 0.5em 0;
+      }
+      a {
+          color: #0066cc;
+          text-decoration: none;
+      }
+      a:hover {
+          text-decoration: underline;
+      }
+  `;
+
   #state = {
-    message: "",
+    thinkContent: "",
+    messageContent: "",
+    fullMessage: "",
   };
+
+  #container = null;
+  #observer = null;
 
   constructor() {
     super();
+    console.log("[chat-message] constructing...");
     this.attachShadow({ mode: "open" });
+    // create shadow DOM references
+    const style = document.createElement("style");
+    style.textContent = ChatMessage.style;
+
+    const container = document.createElement("div");
+    container.className = "container";
+
+    // attach to the shadow root
+    this.shadowRoot.appendChild(style);
+    this.shadowRoot.appendChild(container);
+
+    // set the container reference
+    this.#container = container;
   }
 
-  appendMessage(message) {
-    this.#state.message = message;
-    this.render();
+  get rawTextData() {
+    return this.getAttribute("text-content") ?? this.innerText;
+  }
+
+  get isThinking() {
+    return !this.#state.message;
+  }
+
+  attributeChangedCallback(name, oldValue, newValue) {
+    console.log("[chat-message] attribute changed:", name, oldValue, newValue);
+
+    if (name === "text-content" && oldValue !== newValue) {
+      if (this.isThinking) {
+        const endOfThink = newValue.indexOf("</think>");
+        if (endOfThink === -1) {
+          this.#state.thinkContent += newValue;
+          return;
+        }
+        const LEN = "</think>".length;
+        this.#state.thinkContent += newValue.slice(0, endOfThink);
+        this.#state.messageContent = newValue.slice(endOfThink + LEN);
+      } else {
+        this.#state.messageContent += newValue;
+      }
+      this.render();
+    }
+  }
+
+  getThinkNode() {
+    const think = document.createElement("think");
+    const value = this.#state.thinkContent;
+    console.log("[client] getThinkNode()", value);
+
+    think.innerHTML = this.#state.thinkContent;
+    return think;
+  }
+
+  getMessageContent() {
+    const message = document.createElement("message");
+    message.innerHTML = this.#state.messageContent;
+    return message;
+  }
+
+  convertToHTML(text) {}
+
+  get textContent() {
+    return this.getAttribute("text-content");
+  }
+
+  set textContent(value) {
+    console.log("[chat-message] setting text");
+    this.#state.fullMessage += value;
   }
 
   connectedCallback() {
+    console.log("[chat-message] connected!");
+    // watch for mutations
+    this.#observer = new MutationObserver(() => {
+      console.log("[chat-message] mutation observed!");
+      this.render();
+    });
     this.render();
   }
 
+  disconnectedCallback() {
+    console.log("[chat-message] disconnected!");
+    this.#observer.disconnect();
+  }
+
   render() {
-    this.shadowRoot.innerHTML = `
-      <style>
-        .chat-message {
-          display: block;
-          padding: 1rem;
-          margin: 1rem;
-          border-radius: 0.5rem;
-          background-color: #f5f5f5;
-          box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.1);
-        }
-      </style>
-      <div class="chat-message">
-        <slot></slot>
-      </div>
-    `;
+    if (!this.#container) {
+      console.error("[chat-message] container not found!");
+      return;
+    }
+    console.log("[chat-message] render...");
+    this.#container.innerHTML = "";
+    this.#container.appendChild(this.getThinkNode());
+    this.#container.appendChild(this.getMessageContent());
   }
 }
 

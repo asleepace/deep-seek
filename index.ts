@@ -6,13 +6,11 @@ const Pages = {
 
 class FileResponse extends Response {
   static isStaticAsset(url: URL): boolean {
-    return url.pathname.endsWith(".js") || url.pathname.endsWith(".css");
+    return [".js", ".css"].some((ext) => url.pathname.endsWith(ext));
   }
 
   static assetAt(path: string): FileResponse {
-    const assetFilePath = `./src/client${path}`;
-    console.log("[FileResponse] serving asset: ", assetFilePath);
-    return new FileResponse(assetFilePath);
+    return new FileResponse(`./src/client${path}`);
   }
 
   constructor(path: string) {
