@@ -1,0 +1,40 @@
+/*
+ * This is a CSS file that is used to style the chat messages in the chat window.
+ * The chat messages are styled with a background color of red.
+ */
+:host {
+    display: flex;
+    font-family:
+        system-ui,
+        -apple-system,
+        sans-serif;
+    padding: 1em;
+    border: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+
+    color: rgb(245, 244, 239);
+    font-size: 16px;
+    font-size-adjust: none;
+    font-stretch: 100%;
+    font-weight: 400;
+
+    text-size-adjust: 100%;
+    line-height: 26.4px;
+}
+
+.container {
+    flex-direction: column;
+    flex-shrink: 1;
+    display: flex;
+    padding: 1em;
+}
+
+think {
+    border: none;
+    border-left: 2px solid oklch(0.54 0.28 272.03);
+    padding-left: 1em;
+}
+
+p {
+    margin: 0.5em 0;
+}

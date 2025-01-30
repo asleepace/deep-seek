@@ -1,3 +1,5 @@
+import mark from "./mark.js";
+
 /**
  * ## Model Context
  *
@@ -259,7 +261,7 @@ class Chat {
  * Create special chat-message HTML element which handles
  * parsing and rendering the chat messages.
  */
-class ChatMessage extends HTMLElement {
+export class ChatMessage extends HTMLElement {
   static get observedAttributes() {
     return ["text-content"];
   }
@@ -267,44 +269,9 @@ class ChatMessage extends HTMLElement {
     console.log("[client] defining custom chat-message element!");
     window.customElements.define("chat-message", ChatMessage);
   }
-  static style = `
-      :host {
-          display: flex;
-          font-family: system-ui, -apple-system, sans-serif;
-          padding: 1em;
-          border-none;
-          border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-      }
-      .container {
-          color: white;
-          flex-direction: column;
-          flex-shrink: 1;
-          display: flex;
-          padding: 1em;
-      }
-
-      think {
-          border: none;
-          border-left: 2px solid oklch(0.54 0.28 272.03);
-          padding-left: 1em;
-      }
-
-      p {
-          margin: 0.5em 0;
-      }
-      a {
-          color: #0066cc;
-          text-decoration: none;
-      }
-      a:hover {
-          text-decoration: underline;
-      }
-  `;
 
   #state = {
-    thinkContent: "",
-    messageContent: "",
-    fullMessage: "",
+    message: "",
   };
 
   #container = null;
@@ -313,71 +280,34 @@ class ChatMessage extends HTMLElement {
     super();
     console.log("[chat-message] constructing...");
     this.attachShadow({ mode: "open" });
-    // create shadow DOM references
-    const style = document.createElement("style");
-    style.textContent = ChatMessage.style;
+    // link the stylesheet
+    const styleLink = document.createElement("link");
+    styleLink.rel = "stylesheet";
+    styleLink.href = "/message.css";
+    this.shadowRoot.appendChild(styleLink);
 
     const container = document.createElement("div");
     container.className = "container";
-
-    // attach to the shadow root
-    this.shadowRoot.appendChild(style);
     this.shadowRoot.appendChild(container);
-
-    // set the container reference
-    this.#container = container;
+    this.#container = container; // keep a reference
   }
 
   set message(value) {
     console.log("[chat-message] setting message:", value);
-    this.#state.messageContent = value;
+    this.#state.message = value;
     this.render();
   }
 
   get message() {
-    return this.#state.messageContent;
+    return this.#state.message || "";
   }
 
   attributeChangedCallback(name, oldValue, newValue) {
     console.log("[chat-message] attribute changed:", name, oldValue, newValue);
-
     if (name === "text-content" && oldValue !== newValue) {
-      if (this.isThinking) {
-        const endOfThink = newValue.indexOf("</think>");
-        if (endOfThink === -1) {
-          this.#state.thinkContent += newValue;
-          return;
-        }
-        const LEN = "</think>".length;
-        this.#state.thinkContent += newValue.slice(0, endOfThink);
-        this.#state.messageContent = newValue.slice(endOfThink + LEN);
-      } else {
-        this.#state.messageContent += newValue;
-      }
+      this.#state.message = newValue;
       this.render();
     }
-  }
-
-  getThinkContent(text) {
-    if (!text) return "...";
-    text = text.replace("<think>", "");
-    text = text.replace("</think>", "");
-    text = text.trimStart();
-
-    text = text
-      .split("\n")
-      .filter(Boolean)
-      .map((line) => {
-        return `<p>${line}</p>`;
-      })
-      .join("");
-
-    return text;
-  }
-
-  getMessageContent(text) {
-    if (!text) return "";
-    return `<p>${text}</p>`;
   }
 
   render() {
@@ -385,30 +315,7 @@ class ChatMessage extends HTMLElement {
       console.error("[chat-message] container not found!");
       return;
     }
-
-    this.#container.innerHTML = "";
-
-    // render think and message content only
-    if (!this.#state.messageContent.includes("<think>")) {
-      const message = document.createElement("message");
-      message.innerHTML = this.getMessageContent(this.#state.messageContent);
-      this.#container.appendChild(message);
-      return;
-    }
-
-    const sections = this.#state.messageContent.split("</think>");
-
-    const thinkContent = this.getThinkContent(sections.at(0));
-    const messageContent = this.getMessageContent(sections.at(1));
-
-    const think = document.createElement("think");
-    think.innerHTML = thinkContent;
-
-    const message = document.createElement("message");
-    message.innerHTML = messageContent;
-
-    this.#container.appendChild(think);
-    this.#container.appendChild(message);
+    this.#container.innerHTML = mark(this.message);
   }
 }
 
