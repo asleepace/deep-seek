@@ -245,11 +245,11 @@ class Chat {
     this.messages.forEach((message, i) => {
       if (!children[i]) {
         const chatMessage = document.createElement("chat-message");
-        chatMessage.textContent = message.response;
+        chatMessage.message = message.response;
         chatOutput.appendChild(chatMessage);
       }
       if (children[i] && i === lastIndex) {
-        children[i].textContent = message.response;
+        children[i].message = message.response;
       }
     });
   }
@@ -259,10 +259,9 @@ class Chat {
  * Create special chat-message HTML element which handles
  * parsing and rendering the chat messages.
  */
-
 class ChatMessage extends HTMLElement {
   static get observedAttributes() {
-    return ["textContent", "text-content"];
+    return ["text-content"];
   }
   static {
     console.log("[client] defining custom chat-message element!");
@@ -302,7 +301,6 @@ class ChatMessage extends HTMLElement {
   };
 
   #container = null;
-  #observer = null;
 
   constructor() {
     super();
@@ -323,12 +321,14 @@ class ChatMessage extends HTMLElement {
     this.#container = container;
   }
 
-  get rawTextData() {
-    return this.getAttribute("text-content") ?? this.innerText;
+  set message(value) {
+    console.log("[chat-message] setting message:", value);
+    this.#state.messageContent = value;
+    this.render();
   }
 
-  get isThinking() {
-    return !this.#state.message;
+  get message() {
+    return this.#state.messageContent;
   }
 
   attributeChangedCallback(name, oldValue, newValue) {
@@ -351,45 +351,16 @@ class ChatMessage extends HTMLElement {
     }
   }
 
-  getThinkNode() {
-    const think = document.createElement("think");
-    const value = this.#state.thinkContent;
-    console.log("[client] getThinkNode()", value);
-
-    think.innerHTML = this.#state.thinkContent;
-    return think;
+  getThinkContent(text) {
+    if (!text) return "<think>...</think>";
+    text = text.replace(/<think>/g, "");
+    text = text.replace(/<\/think>/g, "");
+    return `<think>${text}</think>`;
   }
 
-  getMessageContent() {
-    const message = document.createElement("message");
-    message.innerHTML = this.#state.messageContent;
-    return message;
-  }
-
-  convertToHTML(text) {}
-
-  get textContent() {
-    return this.getAttribute("text-content");
-  }
-
-  set textContent(value) {
-    console.log("[chat-message] setting text");
-    this.#state.fullMessage += value;
-  }
-
-  connectedCallback() {
-    console.log("[chat-message] connected!");
-    // watch for mutations
-    this.#observer = new MutationObserver(() => {
-      console.log("[chat-message] mutation observed!");
-      this.render();
-    });
-    this.render();
-  }
-
-  disconnectedCallback() {
-    console.log("[chat-message] disconnected!");
-    this.#observer.disconnect();
+  getMessageContent(text) {
+    if (!text) return "";
+    return `<p>${text}</p>`;
   }
 
   render() {
@@ -397,10 +368,21 @@ class ChatMessage extends HTMLElement {
       console.error("[chat-message] container not found!");
       return;
     }
-    console.log("[chat-message] render...");
+
     this.#container.innerHTML = "";
-    this.#container.appendChild(this.getThinkNode());
-    this.#container.appendChild(this.getMessageContent());
+
+    const sections = this.#state.messageContent.split("</think>");
+    const thinkContent = this.getThinkContent(sections.at(0));
+    const messageContent = this.getMessageContent(sections.at(1));
+
+    const think = document.createElement("think");
+    think.innerHTML = thinkContent;
+
+    const message = document.createElement("message");
+    message.innerHTML = messageContent;
+
+    this.#container.appendChild(think);
+    this.#container.appendChild(message);
   }
 }
 

@@ -21,6 +21,10 @@ docker compose up -d
 # List all available models (via Docker Desktop CLI)
 ollama list
 
+# If you don't see the DeepSeek model you may need to manually pull it
+# by running the following in the Docker Desktop CLI:
+ollama pull deepseek-r1:7b
+
 # Quickly test the model is running (via Docker Desktop CLI)
 curl http://localhost:11434/api/generate -d '{
   "model": "deepseek-r1:7b",
