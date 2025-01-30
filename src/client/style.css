@@ -2,9 +2,12 @@
     --color-code-txt: oklch(0.88 0.31 137.1); /* neon green */
     --color-code-bg: oklch(0.16 0 0);
     --color-primary: oklch(0.12 0 0);
+    --color-pink: oklch(0.75 0.27 340.29);
     --color-secondary: oklch(0.22 0 0);
     --color-lightest: oklch(0.32 0 0);
     --color-border: oklch(0.42 0 0);
+    --color-purple: oklch(0.54 0.28 272.03);
+    --color-light-purple: oklch(0.64 0.21 278.01);
     --color-text: oklch(0.82 0 0);
     --color-text-dim: oklch(0.82 0 0 / 0.6);
     --chat-width: 720px;
@@ -172,6 +175,7 @@ h1 {
     font-size: 2em;
     font-weight: 700;
     margin-bottom: 0.2em;
+    color: var(--color-light-purple);
 }
 
 header {

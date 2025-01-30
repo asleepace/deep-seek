@@ -282,6 +282,13 @@ class ChatMessage extends HTMLElement {
           display: flex;
           padding: 1em;
       }
+
+      think {
+          border: none;
+          border-left: 2px solid oklch(0.54 0.28 272.03);
+          padding-left: 1em;
+      }
+
       p {
           margin: 0.5em 0;
       }
@@ -352,10 +359,20 @@ class ChatMessage extends HTMLElement {
   }
 
   getThinkContent(text) {
-    if (!text) return "<think>...</think>";
-    text = text.replace(/<think>/g, "");
-    text = text.replace(/<\/think>/g, "");
-    return `<think>${text}</think>`;
+    if (!text) return "...";
+    text = text.replace("<think>", "");
+    text = text.replace("</think>", "");
+    text = text.trimStart();
+
+    text = text
+      .split("\n")
+      .filter(Boolean)
+      .map((line) => {
+        return `<p>${line}</p>`;
+      })
+      .join("");
+
+    return text;
   }
 
   getMessageContent(text) {
@@ -371,7 +388,16 @@ class ChatMessage extends HTMLElement {
 
     this.#container.innerHTML = "";
 
+    // render think and message content only
+    if (!this.#state.messageContent.includes("<think>")) {
+      const message = document.createElement("message");
+      message.innerHTML = this.getMessageContent(this.#state.messageContent);
+      this.#container.appendChild(message);
+      return;
+    }
+
     const sections = this.#state.messageContent.split("</think>");
+
     const thinkContent = this.getThinkContent(sections.at(0));
     const messageContent = this.getMessageContent(sections.at(1));
 
